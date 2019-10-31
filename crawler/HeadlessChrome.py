@@ -4,14 +4,27 @@ from bs4 import BeautifulSoup
 
 class HeadLessChrome:
 
+    def reconn(self):
+        try:
+            self.driver.close()
+        except:
+            print('driver error')
+
+        self.driver = webdriver.Chrome(self.driver_path, chrome_options=self.options)
+        self.driver.implicitly_wait(1)
+        print('driver reconnect complete')
+
     def __init__(self, driver_path='C:/chromedriver_win32/chromedriver'):
         self.driver_path = driver_path
-        options = webdriver.ChromeOptions()
-        options.add_argument('--window-size=1920,1080')
-        options.add_argument('--disable-extensions')
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument('--window-size=1920,1080')
+        self.options.add_argument('--disable-extensions')
+        self.options.add_argument('--log-level=3')
+        self.options.add_argument('--silent')
         # options.add_argument('--disable-gpu')
-        options.add_argument('--headless')
-        self.driver = webdriver.Chrome(self.driver_path, chrome_options=options)
+        self.options.add_argument('--headless')
+        
+        self.driver = webdriver.Chrome(self.driver_path, chrome_options=self.options)
         self.driver.implicitly_wait(1)
 
     def _age_check_with_birthday(self):
@@ -73,4 +86,4 @@ class HeadLessChrome:
         return soup
 
     def __del__(self):
-        self.driver.quit()
+        self.driver.close()
